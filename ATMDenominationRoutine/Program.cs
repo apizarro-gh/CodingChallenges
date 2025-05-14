@@ -1,12 +1,11 @@
 ﻿class Program
 {
-    static int[] amounts = [30, 50, 60, 80, 100, 140, 230, 370, 610, 980];
+    static int[] amounts = [30, 50, 60, 80, 140, 230, 370, 610, 980];
     // If we put amounts like 5, 53 should throw no valid combinations found message
 
     static void Main()
     {
-        foreach (int amount in amounts)
-        {
+        foreach (int amount in amounts) {
             Console.WriteLine($"Payout: {amount} EUR");
 
             bool hasCombination = false;
@@ -27,8 +26,7 @@
                 }
             }
 
-            if (!hasCombination)
-            {
+            if (!hasCombination) {
                 Console.WriteLine("No valid combinations found");
             }
 

@@ -17,10 +17,8 @@ public class CustomerStore
 
     public void AddCustomers(IEnumerable<Customer> customers)
     {
-        lock (_lock)
-        {
-            foreach (var customer in customers)
-            {
+        lock (_lock) {
+            foreach (var customer in customers) {
                 InsertSorted(customer);
             }
             SaveToFile();
@@ -29,19 +27,16 @@ public class CustomerStore
 
     private void InsertSorted(Customer customer)
     {
-        for (int i = 0; i < _customers.Count; i++)
-        {
+        for (int i = 0; i < _customers.Count; i++) {
             var current = _customers[i];
 
             int lastNameCmp = string.Compare(customer.LastName, current.LastName, StringComparison.OrdinalIgnoreCase);
-            if (lastNameCmp < 0 ||
-                (lastNameCmp == 0 && string.Compare(customer.FirstName, current.FirstName, StringComparison.OrdinalIgnoreCase) < 0))
-            {
+            if (lastNameCmp < 0 || (lastNameCmp == 0 && string.Compare(customer.FirstName, current.FirstName, StringComparison.OrdinalIgnoreCase) < 0)) {
                 _customers.Insert(i, customer);
                 return;
             }
         }
-        _customers.Add(customer); // insert at end
+        _customers.Add(customer);
     }
 
     private void SaveToFile()
@@ -52,12 +47,12 @@ public class CustomerStore
 
     private void LoadFromFile()
     {
-        if (File.Exists(_filePath))
-        {
+        if (File.Exists(_filePath)) {
             var json = File.ReadAllText(_filePath);
             var loaded = JsonSerializer.Deserialize<List<Customer>>(json);
-            if (loaded is not null)
+            if (loaded is not null) {
                 _customers.AddRange(loaded);
+            }
         }
     }
 }

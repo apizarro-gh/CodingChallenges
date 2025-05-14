@@ -11,20 +11,17 @@ string[] lastNames = { "Liberty", "Ray", "Harrison", "Ronan", "Drew", "Powell", 
 
 var random = new Random();
 int idCounter = 1;
+int customersPerRequest = 3;
 
 var tasks = new List<Task>();
 
-for (int i = 0; i < 10; i++)
-{
-    tasks.Add(Task.Run(async () =>
-    {
+for (int i = 0; i < 10; i++) {
+    tasks.Add(Task.Run(async () => {
         var customers = new List<Customer>();
 
-        for (int j = 0; j < 3; j++) // 3 customers per request asked
-        {
+        for (int j = 0; j < customersPerRequest; j++) {
             int age = random.Next(10, 90);
-            customers.Add(new Customer
-            {
+            customers.Add(new Customer {
                 FirstName = firstNames[random.Next(firstNames.Length)],
                 LastName = lastNames[random.Next(lastNames.Length)],
                 Age = age,
@@ -36,25 +33,21 @@ for (int i = 0; i < 10; i++)
         var response = await client.PostAsJsonAsync("/customers", customers);
         Console.WriteLine($"POST status: {response.StatusCode}");
 
-        if (!response.IsSuccessStatusCode)
-        {
+        if (!response.IsSuccessStatusCode) {
             var content = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"Error: {content}");
         }
-
     }));
 }
 
 // Task to GET customers after POSTs
-tasks.Add(Task.Run(async () =>
-{
+tasks.Add(Task.Run(async () => {
     await Task.Delay(3000);
     Console.WriteLine("\nFetching all customers information...");
 
     var customers = await client.GetFromJsonAsync<List<Customer>>("/customers");
 
-    foreach (var c in customers)
-    {
+    foreach (var c in customers) {
         Console.WriteLine($"{c.LastName}, {c.FirstName} - Age: {c.Age}, ID: {c.Id}");
     }
 }));
