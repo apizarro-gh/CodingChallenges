@@ -1,0 +1,15 @@
+# To ignore the build outputs
+bin/
+obj/
+
+# To ignore user-specific files
+*.user
+*.suo
+*.cache
+
+# For ignore Visual Studio Code configurations
+.vscode/
+
+# For ignore environment and also log files
+.env
+*.log
